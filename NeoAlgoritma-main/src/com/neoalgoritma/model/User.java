@@ -1,4 +1,4 @@
-package com.neoalgoritma.user;
+package com.neoalgoritma.model;
 
 import java.util.Date;
 

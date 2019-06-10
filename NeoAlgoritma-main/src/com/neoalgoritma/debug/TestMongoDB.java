@@ -11,24 +11,31 @@ import org.bson.types.ObjectId;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.QueryBuilder;
-import com.neoalgoritma.user.Address;
-import com.neoalgoritma.user.User;
-import com.neoalgoritma.user.UserDAO;
+import com.neoalgoritma.dao.NeoAlgoritmaPackageDAO;
+import com.neoalgoritma.dao.SubscriptionDAO;
+import com.neoalgoritma.dao.UserDAO;
+import com.neoalgoritma.model.Address;
+import com.neoalgoritma.model.NeoAlgoritmaPackage;
+import com.neoalgoritma.model.User;
 
 public class TestMongoDB {
 
 	public static void main(String[] args) {
 					
-		//Config cfg = new Config();
-		//DatabaseConnection dbConn = new DatabaseConnection(cfg.getProperty("dbURL"), 
-		//									Integer.parseInt(cfg.getProperty("dbPort")), cfg.getProperty("dbNameWebsiteMain"));
-		//MongoDatabase database = dbConn.getUserDatabase();
-		
 		try {
-			UserDAO userDAO = new UserDAO("neoalgoritma","user");
-			User user = new User();
-			ObjectId o = new ObjectId();
-			System.out.println(userDAO.getUserLogin("Email2", "password2"));
+			
+			NeoAlgoritmaPackageDAO neopackageDAO = new NeoAlgoritmaPackageDAO("neoalgoritma","package");
+			NeoAlgoritmaPackage neopackage = new NeoAlgoritmaPackage("Basic Point of Sales","Provide basic point of sales system. Useful for small retail business owner who "
+					+ "requires basic point of sales system",0,0);
+			neopackageDAO.insert(neopackage);
+			neopackage = new NeoAlgoritmaPackage("Starter Point of Sales","Provide more point of sales system. Useful small retail business owner who " + 
+					"requires more point of sales system. The system will be able to provide database download etc " + 
+					"blah blah blah blah",10,30);
+			neopackageDAO.insert(neopackage);
+			//UserDAO userDAO = new UserDAO("neoalgoritma","user");
+			//User user = new User();
+			//ObjectId o = new ObjectId();
+			//System.out.println(userDAO.getUserLogin("Email2", "password2"));
 			//Test findMany
 			/*
 			Document query = new Document();

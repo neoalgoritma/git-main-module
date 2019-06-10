@@ -9,5 +9,7 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/myfaces-2.3.2"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="C:/SelfProject/jars/primefaces-7.0.jar"/>
+	<classpathentry kind="lib" path="C:/SelfProject/tomcat9-64x/apache-tomcat-9.0.14/lib/servlet-api.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

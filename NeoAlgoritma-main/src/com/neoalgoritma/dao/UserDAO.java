@@ -1,8 +1,10 @@
-package com.neoalgoritma.user;
+package com.neoalgoritma.dao;
 
 import java.util.Arrays;
 
 import org.bson.Document;
+
+import com.neoalgoritma.model.User;
 
 public class UserDAO extends GenericDAO<User> {
 

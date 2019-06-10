@@ -4,24 +4,32 @@ import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
-import com.neoalgoritma.user.UserDAO;
+import org.primefaces.PrimeFaces;
+
+import com.neoalgoritma.dao.UserDAO;
+import com.neoalgoritma.model.Address;
+import com.neoalgoritma.model.User;
+import com.neoalgoritma.util.Utils;
 
 public class RegisterBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	com.neoalgoritma.util.Utils utils;
+	Utils utils = new Utils();
 	String firstname;
 	String lastname;
 	String email;
 	String password;
 	String passwordRe;
 	String company;
-	String address;
+	String street;
+	String state;
+	String city;
 	String postcode;
 	String country;
 	String mobile;
-	UserDAO user = new UserDAO("neoalgoritma","user");
+	UserDAO userDAO = new UserDAO("neoalgoritma","user");
 	
 	@PostConstruct
 	public void init() {
@@ -32,25 +40,24 @@ public class RegisterBean implements Serializable {
 		boolean formValid = true;
 		
 		if(!utils.isValidEmailAddress(email)) {
-			FacesContext.getCurrentInstance().addMessage("createAccountForm:email", new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+			System.out.println("email not same");
+			FacesContext.getCurrentInstance().addMessage("registerForm:email", new FacesMessage(FacesMessage.SEVERITY_ERROR, 
 					"Invalid email address", "Invalid email address"));
-			FacesContext.getCurrentInstance().addMessage("createAccountForm:password", new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-					"Invalid password", "Invalid password"));
 			formValid = false;
 		}
 		if(!password.contentEquals(passwordRe)) {
-			FacesContext.getCurrentInstance().addMessage("createAccountForm:password",
+			FacesContext.getCurrentInstance().addMessage("registerForm:password",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, 
 					"Password entered is different", "Password entered is different"));
-			FacesContext.getCurrentInstance().addMessage("createAccountForm:passwordRe",
+			FacesContext.getCurrentInstance().addMessage("registerForm:passwordRe",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, 
 					"Password entered is different", "Re-enter exact same password"));
 			formValid = false;
 		}
 		if(formValid) {
-			user.toString();
-			if (!user.emailRegistered(this.email)){
-				FacesContext.getCurrentInstance().addMessage("createAccountForm:email", new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+			
+			if (userDAO.emailRegistered(this.email)){
+				FacesContext.getCurrentInstance().addMessage("registerForm:email", new FacesMessage(FacesMessage.SEVERITY_ERROR, 
 						"Email already registered on system", "Email already registered on system"));
 				formValid = false;
 			}
@@ -58,19 +65,22 @@ public class RegisterBean implements Serializable {
 		
 		if(formValid) {
 			System.out.println("form valid");
-			//user = new UserDAO(firstname,lastname,password,email,address,mobile,new Date());
-			/*
-			int userId = 0;
-				try {
-					userId = user.insertToDB();
+			Address address = new Address(street, state, city, country, postcode);
+			User user = new User(firstname, lastname, password, email, mobile, false, address);
+			
+			try {
+				if(userDAO.insert(user) != null) {
+					HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+					session.setAttribute("loggedUser", user);
 					PrimeFaces current = PrimeFaces.current();
-					current.executeScript("redirectToMain();");
-				
-				} catch (Exception e) {
-					System.out.println("Error register....");
-					e.printStackTrace();
+					current.executeScript("redirectToMainRegister();");
 				}
-			*/
+				
+			} catch (Exception e) {
+				System.out.println("Error register....");
+				e.printStackTrace();
+			}
+			
 		}
 		
 		System.out.println(formValid);
@@ -124,12 +134,29 @@ public class RegisterBean implements Serializable {
 		this.company = company;
 	}
 
-	public String getAddress() {
-		return address;
+	
+	public String getStreet() {
+		return street;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public String getPostcode() {

@@ -1,6 +1,6 @@
 package com.neoalgoritma.company;
 
-import com.neoalgoritma.user.GenericDAO;
+import com.neoalgoritma.dao.GenericDAO;
 
 public class CompanyDAO extends GenericDAO<Company> {
 

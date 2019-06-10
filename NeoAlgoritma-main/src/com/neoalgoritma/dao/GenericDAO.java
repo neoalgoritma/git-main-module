@@ -1,4 +1,4 @@
-package com.neoalgoritma.user;
+package com.neoalgoritma.dao;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 import java.lang.reflect.ParameterizedType;
@@ -33,6 +33,7 @@ public abstract class GenericDAO<T> {
 	public String databaseName;
 	public String collectionName;
 	MongoCollection<T> collection;
+
 	
 	@SuppressWarnings("unchecked")
 	public GenericDAO(String databaseName,String collectionName) {

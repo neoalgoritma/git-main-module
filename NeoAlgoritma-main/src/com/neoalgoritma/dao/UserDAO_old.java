@@ -1,4 +1,4 @@
-package com.neoalgoritma.user;
+package com.neoalgoritma.dao;
 
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -16,6 +16,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.neoalgoritma.database.mongodb.DatabaseConnection;
+import com.neoalgoritma.model.User;
 import com.neoalgoritma.util.Config;
 import com.neoalgoritma.util.Utils;
 
