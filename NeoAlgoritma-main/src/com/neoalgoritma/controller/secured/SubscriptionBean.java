@@ -13,6 +13,7 @@ import javax.faces.context.FacesContext;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import org.primefaces.PrimeFaces;
 
 import com.neoalgoritma.dao.NeoAlgoritmaPackageDAO;
 import com.neoalgoritma.dao.SubscriptionDAO;
@@ -59,8 +60,10 @@ public class SubscriptionBean implements Serializable {
 			LocalDateTime endDate = startDate;
 			endDate = endDate.plusDays(selectedPackage.tenure);
 			System.out.println(endDate);
-			//Subscription subscription = new Subscription(selectedPackage.getId(), startDate, endDate,loggedUser.getId());
-			//subscriptionDAO.insert(subscription);
+			Subscription subscription = new Subscription(selectedPackage.getId(), startDate, endDate,loggedUser.getId());
+			subscriptionDAO.insert(subscription);
+			PrimeFaces current = PrimeFaces.current();
+			current.executeScript("redirectToPosSetting();");
 		}
 		else {
 			System.out.println("No package selected");
