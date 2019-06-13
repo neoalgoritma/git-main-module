@@ -34,7 +34,14 @@ public abstract class GenericDAO<T> {
 	public String collectionName;
 	MongoCollection<T> collection;
 
+	public GenericDAO() {
+		
+	}
 	
+	public GenericDAO(String collectionName) {
+		this.collectionName = collectionName;
+	}
+
 	@SuppressWarnings("unchecked")
 	public GenericDAO(String databaseName,String collectionName) {
 		entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -52,6 +59,10 @@ public abstract class GenericDAO<T> {
 		System.out.println("Constructed GenericDao, with class: " + entityClass + " database: " + this.databaseName + " collection: " + this.collectionName);
 	}
 
+	public long getCollectionCount() {
+		return collection.countDocuments();
+	}
+	
 	public T insert(T entity) {
 		try {
 			

@@ -17,9 +17,11 @@ import org.primefaces.PrimeFaces;
 
 import com.neoalgoritma.dao.NeoAlgoritmaPackageDAO;
 import com.neoalgoritma.dao.SubscriptionDAO;
+import com.neoalgoritma.dao.UserPosDatabaseDAO;
 import com.neoalgoritma.model.NeoAlgoritmaPackage;
 import com.neoalgoritma.model.Subscription;
 import com.neoalgoritma.model.User;
+import com.neoalgoritma.model.UserPosDatabase;
 import com.neoalgoritma.util.Config;
 
 public class SubscriptionBean implements Serializable {
@@ -61,9 +63,20 @@ public class SubscriptionBean implements Serializable {
 			endDate = endDate.plusDays(selectedPackage.tenure);
 			System.out.println(endDate);
 			Subscription subscription = new Subscription(selectedPackage.getId(), startDate, endDate,loggedUser.getId());
+			//if(subscriptionDAO.subscribed(subscribed, packageId))
 			subscriptionDAO.insert(subscription);
+			// create userPosDatabase if not exist
+			UserPosDatabase userPosDatabase;
+			UserPosDatabaseDAO userPosDatabaseDAO = new UserPosDatabaseDAO("neoalgoritma","user_database_map");
+			userPosDatabase = userPosDatabaseDAO.findUserDatabaseSetting(loggedUser.getId());
+			if(userPosDatabase == null) {
+				userPosDatabase = new UserPosDatabase(userPosDatabaseDAO.generateDatabaseName(loggedUser.getId()),
+														userPosDatabaseDAO.generateDatabasePassword(loggedUser.getId()), loggedUser.getId());
+				userPosDatabaseDAO.insert(userPosDatabase);
+			}
+			
 			PrimeFaces current = PrimeFaces.current();
-			current.executeScript("redirectToPosSetting();");
+			current.executeScript("redirectTo('Subscription','Added','success','pos/pos-status.xhtml');");
 		}
 		else {
 			System.out.println("No package selected");
